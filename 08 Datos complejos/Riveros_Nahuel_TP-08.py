@@ -1,4 +1,5 @@
 from math import pi
+from collections import deque
 
 # 1) Dado el diccionario precios_frutas 
 precios_frutas = {'Banana': 1200, 'Ananá': 2500, 'Melón': 3000, 'Uva': 1450} 
@@ -76,3 +77,78 @@ circulo.calcular_perimetro()
 
 # 6) Dado un string con paréntesis "()", "{}", "[]",
 #  verifica si están correctamente balanceados usando una pila.
+def str_balanceados(str):
+    pila = []
+    pares = {')': '(', '}':'{', ']': '['}
+
+    for char in str:
+        if char in '({[':
+            pila.append(char)
+        elif char in ')}]':
+            if not pila:
+                return False
+            
+            ultimo = pila.pop()
+
+            if ultimo != pares[char]:
+                return False
+    return len(pila) == 0
+
+
+# 7) Usa una cola para simular un sistema de turnos en un banco.
+#  La cola debe permitir: ● Agregar clientes (encolar).
+#  ● Atender clientes (desencolar).
+#  ● Mostrar el siguiente cliente en la fila.
+
+class Cola:
+
+    def __init__(self):
+        self.items = deque()
+
+    def queue(self, val):
+        return self.items.append(val)
+    
+    def dequeue(self):
+        return self.items.pop()
+    
+    def show_next(self):
+        return self.items[-1]
+    
+    def is_empty(self):
+        return len(self.items) == 0
+    
+
+# 8) Crea una lista enlazada que permita insertar nodos al inicio y recorrer la lista para mostrar los valores almacenados.
+
+class Nodo:
+    def __init__(self, valor):
+        self.valor = valor
+        self.siguiente = None
+
+
+class ListaEnlazada:
+    def __init__(self):
+        self.cabeza = None
+
+    def agregar_al_inicio(self,valor):
+        nuevo = Nodo(valor)
+        nuevo.siguiente = self.cabeza
+        self.cabeza = nuevo
+
+    def imprimir(self):
+        actual = self.cabeza
+        while actual:
+            print(actual.valor, end='->')
+            actual = actual.siguiente
+        print('None')
+
+    def invertir(self):
+        anterior = None
+        actual = self.cabeza
+        while actual:
+            siguiente = actual.siguiente
+            actual.siguiente = anterior
+            anterior = actual
+            actual = siguiente
+        
+        self.cabeza = anterior
